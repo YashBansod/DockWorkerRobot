@@ -1,90 +1,64 @@
 #!/usr/bin/env python
 """
-File Description:
+Dock Worker Robot Simulation.
 """
 
 # ******************************************    Libraries to be imported    ****************************************** #
 from __future__ import print_function, division
+import importlib
+import argparse
 import numpy as np
 from tqdm import tqdm
-from utils import param_interpreter, t_arr_creator
+from utils import param_interpreter
 from output_functions import text_output
-from parameters import PARAM_DICT
-from sim_class_def import ShipQueue, Robot, Ship, Pallet, Crane, Brain
+from simulation_func import simulate
 
 
 # ******************************************        Main Program Start      ****************************************** #
-def main():
+def main(args):
     """
     The main of the program.
     """
-    params = param_interpreter(PARAM_DICT)
-    sim_ctrl = params['SIM_CTRL']
-    det_params = params['D_PARAMS']
-    st_params = params['S_PARAMS']
 
-    mean_q_len_arr = np.zeros(sim_ctrl['N'])        # Mean service time
-    mean_s_time_arr = np.zeros(sim_ctrl['N'])       # Mean queue wait time
-    mean_wq_time_arr = np.zeros(sim_ctrl['N'])      # Mean queue length
-    num_c_arr = np.zeros(sim_ctrl['N'])             # Number of cargo containers transported to the city
-    num_s_arr = np.zeros(sim_ctrl['N'])             # Number of ships processed
+    param_dict = param_interpreter(importlib.import_module(args.parameter).PARAM_DICT)
 
-    for sim in tqdm(range(sim_ctrl['N'])):
+    mean_s_time_arr = np.zeros(param_dict['SIM_CTRL']['N'])     # Mean service time
+    mean_wq_time_arr = np.zeros(param_dict['SIM_CTRL']['N'])    # Mean queue wait time
+    mean_q_len_arr = np.zeros(param_dict['SIM_CTRL']['N'])      # Mean queue length
+    num_c_arr = np.zeros(param_dict['SIM_CTRL']['N'])           # Number of cargo containers transported to city
+    num_s_arr = np.zeros(param_dict['SIM_CTRL']['N'])           # Number of ships processed
 
-        t_arr = t_arr_creator(params)
-        q_arr = np.zeros(sim_ctrl['T_SIM_IN'], dtype=np.uint32)
-        wq_list, s_list = [], []
-        c_var = 0
+    np.random.seed(args.seed)
 
-        ship_queue = ShipQueue(max_length=det_params['L'])
-        crane_list = [Crane(pallet=Pallet(capacity=det_params['P'])) for _ in range(det_params['C'])]
-        robot_list = [Robot(work_time=det_params['TC']) for _ in range(det_params['T'])]
+    for sim_num in tqdm(range(param_dict['SIM_CTRL']['N'])):
+        sim_result = simulate(param_dict)
 
-        brain = Brain(params, robot_list)
+        mean_s_time_arr[sim_num] = sim_result['MEAN_SERV_TIME']
+        mean_wq_time_arr[sim_num] = sim_result['MEAN_WQ_TIME']
+        mean_q_len_arr[sim_num] = sim_result['MEAN_Q_LEN']
+        num_c_arr[sim_num] = sim_result['CARGO_TRANS']
+        num_s_arr[sim_num] = sim_result['SHIPS_SERVICED']
 
-        for t_step in range(sim_ctrl['T_SIM_IN']):
-            if t_arr[t_step]:
-                ship_queue.add_ship(Ship(arrival_time=t_step, num_containers=st_params['K']))
-
-            for robot in robot_list:
-                if robot.working:
-                    c_var += robot.continue_work()
-
-            for crane in crane_list:
-                if crane.docked_ship is None:
-                    ship = ship_queue.pop_ship()
-                    if ship is not None:
-                        crane.docked_ship = ship.dock(t_step)
-                        wq_list.append(ship.serv_start - ship.arr_time)
-
-                if crane.working:
-                    crane.continue_work()
-                else:
-                    work_type, work_time, to_obj = brain.decision(crane)
-                    if work_type != 'None':
-                        crane.initiate_work(work_type, work_time, to_obj)
-
-                if crane.docked_ship is not None:
-                    if crane.docked_ship.num_containers == 0:
-                        ship = crane.docked_ship
-                        crane.docked_ship = ship.undock(t_step)
-                        s_list.append(ship.serv_end - ship.serv_start)
-
-            q_arr[t_step] = len(ship_queue)
-
-        mean_s_time_arr[sim] = np.mean(s_list)      # Mean service time
-        mean_wq_time_arr[sim] = np.mean(wq_list)    # Mean queue wait time
-        mean_q_len_arr[sim] = q_arr.mean()          # Mean queue length
-        num_c_arr[sim] = c_var                      # Number of cargo containers transported to the city
-        num_s_arr[sim] = len(s_list)                # Number of ships processed
-
-    text_output(params, mean_s_time_arr, mean_wq_time_arr, mean_q_len_arr, num_c_arr, num_s_arr)
+    if args.debug:
+        text_output(param_dict, mean_s_time_arr, mean_wq_time_arr, mean_q_len_arr, num_c_arr, num_s_arr)
 
 
 # ******************************************        Main Program End        ****************************************** #
 if __name__ == '__main__':
+
+    argparser = argparse.ArgumentParser(description='DWRS Simulator Main File.')
+
+    argparser.add_argument('-d', '--display', action='store_true', dest='plot', help='Plot graphic results.')
+    argparser.add_argument('-p', '--parameter', default='parameters', type=str, help='Name of the parameter file.')
+    argparser.add_argument('-v', '--verbose', action='store_true', dest='debug', help='Print text results.')
+    argparser.add_argument('-s', '--seed', default=None, type=int, help='Set seed for repeating executions')
+
+    sim_args = argparser.parse_args()
+
+    print(__doc__)
+
     try:
-        main()
+        main(sim_args)
         print('\nFile executed successfully!\n')
     except KeyboardInterrupt:
         print('\nProcess interrupted by user. Bye!')
