@@ -1,0 +1,34 @@
+# ignore python compiled test_files
+*.pyc
+**/__pycache__/
+
+# ignore the pycharm specific setting test_files
+.idea/*
+
+# ignore the virtual environment directory. (If you created the Venv inside the ML Project)
+venv/
+
+# ignore the following test and temp test_files
+test.*
+test?.*
+test??.*
+
+temp.*
+temp?.*
+temp??.*
+
+# ignore logs
+**/logs/
+**/logs*/
+
+# ignore saved numpy arrays
+*.npy
+
+# ignore saved models
+*.h5
+*.tf
+**/saved_models/
+**/saved_models_*/
+
+# ignore videos
+*.mp4
