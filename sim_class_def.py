@@ -183,6 +183,7 @@ class Crane(object):
         """
         self.working = False
         self.work_type = 'None'
+        self.work_hist = []
         self.work_time = -1
         self._rem_time = -1
         self.pallet = pallet
@@ -201,6 +202,7 @@ class Crane(object):
         """
         self.working = True
         self.work_type = work_type
+        self.work_hist.append(work_type)
         self.work_time = work_time
         self._rem_time = work_time
 
@@ -255,6 +257,10 @@ class Crane(object):
             return True
         return False
 
+    # ******************************        Class Method Declaration        ****************************************** #
+    def __lt__(self, other):
+        return self.work_time < other.work_time
+
 # ******************************************    Class Declaration End       ****************************************** #
 
 
@@ -289,7 +295,7 @@ class Brain(object):
                 if not robot.locked:
                     if not robot.working:
                         return 'CST', cst_time, robot
-                    elif robot.get_remaining_time() <= time_estimator(self.params['S_PARAMS']['CST']):
+                    elif robot.get_remaining_time() < time_estimator(self.params['S_PARAMS']['CST']):
                         return 'CST', cst_time, robot
 
             # Else, search for an available pallet to transfer the container to.
@@ -305,7 +311,7 @@ class Brain(object):
                 if not robot.locked:
                     if not robot.working:
                         return 'CPT', cpt_time, robot
-                    elif robot.get_remaining_time() <= time_estimator(self.params['S_PARAMS']['CST']):
+                    elif robot.get_remaining_time() < time_estimator(self.params['S_PARAMS']['CPT']):
                         return 'CPT', cpt_time, robot
         return 'None', -1, None
 
