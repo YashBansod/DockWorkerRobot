@@ -1,0 +1,3 @@
+# Required python libraries
+numpy==1.19.3
+tqdm==4.51.0

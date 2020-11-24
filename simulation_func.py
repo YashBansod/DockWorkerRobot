@@ -41,12 +41,18 @@ def simulate(params):
             if robot.working:
                 c_var += robot.continue_work()
 
+        crane_list.sort()
         for crane in crane_list:
             if crane.docked_ship is None:
                 ship = ship_queue.pop_ship()
                 if ship is not None:
                     crane.docked_ship = ship.dock(t_step)
                     wq_list.append(ship.serv_start - ship.arr_time)
+            else:
+                if crane.docked_ship.num_containers == 0:
+                    ship = crane.docked_ship
+                    crane.docked_ship = ship.undock(t_step)
+                    s_list.append(ship.serv_end - ship.serv_start)
 
             if crane.working:
                 crane.continue_work()
@@ -54,12 +60,7 @@ def simulate(params):
                 work_type, work_time, to_obj = brain.decision(crane)
                 if work_type != 'None':
                     crane.initiate_work(work_type, work_time, to_obj)
-
-            if crane.docked_ship is not None:
-                if crane.docked_ship.num_containers == 0:
-                    ship = crane.docked_ship
-                    crane.docked_ship = ship.undock(t_step)
-                    s_list.append(ship.serv_end - ship.serv_start)
+                    crane.continue_work()
 
         q_arr[t_step] = len(ship_queue)
 
@@ -95,6 +96,7 @@ if __name__ == '__main__':
         text_output(param_dict, mean_s_time_arr, mean_wq_time_arr, mean_q_len_arr, num_c_arr, num_s_arr)
 
         print('\nFile executed successfully!\n')
+        # input("Press any key to exit.")
     except KeyboardInterrupt:
         print('\nProcess interrupted by user. Bye!')
 
