@@ -47,15 +47,52 @@ def graph_output(params, mean_s_time_arr, mean_wq_time_arr, mean_q_len_arr, num_
         raise NotImplementedError
     elif params['MODE'] == 'stochastic':
         n_bins = 21
-        fig, axs = plt.subplots(3, 2, tight_layout=True)
-        axs[0, 0].hist(mean_s_time_arr, density=False, bins=n_bins)
-        axs[0, 1].hist(mean_wq_time_arr, density=False, bins=n_bins)
-        axs[1, 0].hist(mean_q_len_arr, density=False, bins=n_bins)
-        axs[1, 1].hist(num_c_arr, density=False, bins=n_bins)
-        axs[2, 0].hist(num_s_arr, density=False, bins=n_bins)
-        # axs[0, 0].title('Histogram of Sevice Time')
-        # axs[0, 0].ylabel('Probability')
-        # axs[0, 0].xlabel('Service time')
+        ax1 = plt.subplot2grid(shape=(2, 6), loc=(0, 0), colspan=2)
+        ax2 = plt.subplot2grid((2, 6), (0, 2), colspan=2)
+        ax3 = plt.subplot2grid((2, 6), (0, 4), colspan=2)
+        ax4 = plt.subplot2grid((2, 6), (1, 1), colspan=2)
+        ax5 = plt.subplot2grid((2, 6), (1, 3), colspan=2)
+
+        ax1.hist(mean_s_time_arr, density=False, bins=n_bins)
+        _mean = mean_s_time_arr.mean()
+        _std = mean_s_time_arr.std()
+        ax1.axvline(_mean, color='m', linestyle="--")
+        ax1.axvline(_mean + _std, color='c', linestyle="-.")
+        ax1.axvline(_mean - _std, color='c', linestyle="-.")
+        ax1.set(title='Mean Service Time.', xlabel='Service Time (minutes)', ylabel='Simulations')
+
+        ax2.hist(mean_wq_time_arr, density=False, bins=n_bins)
+        _mean = mean_wq_time_arr.mean()
+        _std = mean_wq_time_arr.std()
+        ax2.axvline(_mean, color='m', linestyle="--")
+        ax2.axvline(_mean + _std, color='c', linestyle="-.")
+        ax2.axvline(_mean - _std, color='c', linestyle="-.")
+        ax2.set(title='Mean Queue Wait Time.', xlabel='Queue Wait Time (minutes)', ylabel='Simulations')
+
+        ax3.hist(mean_q_len_arr, density=False, bins=n_bins)
+        _mean = mean_q_len_arr.mean()
+        _std = mean_q_len_arr.std()
+        ax3.axvline(_mean, color='m', linestyle="--")
+        ax3.axvline(_mean + _std, color='c', linestyle="-.")
+        ax3.axvline(_mean - _std, color='c', linestyle="-.")
+        ax3.set(title='Mean Queue Length.', xlabel='Queue Length (ships)', ylabel='Simulations')
+
+        ax4.hist(num_c_arr, density=False, bins=n_bins)
+        _mean = num_c_arr.mean()
+        _std = num_c_arr.std()
+        ax4.axvline(_mean, color='m', linestyle="--")
+        ax4.axvline(_mean + _std, color='c', linestyle="-.")
+        ax4.axvline(_mean - _std, color='c', linestyle="-.")
+        ax4.set(title='Number of Containers Transported.', xlabel='Number of Containers', ylabel='Simulations')
+
+        ax5.hist(num_s_arr, density=False, bins=n_bins)
+        _mean = num_s_arr.mean()
+        _std = num_s_arr.std()
+        ax5.axvline(_mean, color='m', linestyle="--")
+        ax5.axvline(_mean + _std, color='c', linestyle="-.")
+        ax5.axvline(_mean - _std, color='c', linestyle="-.")
+        ax5.set(title='Number of Ships Serviced.', xlabel='Number of Ships', ylabel='Simulations')
+
         plt.show()
 
     else:
