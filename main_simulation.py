@@ -11,7 +11,7 @@ import numpy as np
 from tqdm import tqdm
 from os.path import join
 from utils import param_interpreter
-from output_functions import text_output
+from output_functions import text_output, graph_output
 from simulation_func import simulate
 
 
@@ -45,6 +45,9 @@ def main(args):
 
     if args.debug:
         text_output(param_dict, mean_s_time_arr, mean_wq_time_arr, mean_q_len_arr, num_c_arr, num_s_arr)
+
+    if args.plot:
+        graph_output(param_dict, mean_s_time_arr, mean_wq_time_arr, mean_q_len_arr, num_c_arr, num_s_arr)
 
 
 # ******************************************        Main Program End        ****************************************** #

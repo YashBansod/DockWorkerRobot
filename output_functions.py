@@ -5,6 +5,7 @@ File Description:
 
 # ******************************************    Libraries to be imported    ****************************************** #
 from __future__ import print_function, division
+from matplotlib import pyplot as plt
 
 
 # ****************************************        Function Declaration        **************************************** #
@@ -32,8 +33,21 @@ def text_output(params, mean_s_time_arr, mean_wq_time_arr, mean_q_len_arr, num_c
 
 # ****************************************        Function Declaration        **************************************** #
 def graph_output(params, mean_s_time_arr, mean_wq_time_arr, mean_q_len_arr, num_c_arr, num_s_arr):
+    sim_ctrl = params['SIM_CTRL']
     if params['MODE'] == 'deterministic':
         raise NotImplementedError
+    elif params['MODE'] == 'stochastic':
+        n_bins = 21
+        fig, axs = plt.subplots(3, 2, tight_layout=True)
+        axs[0, 0].hist(mean_s_time_arr, density=False, bins=n_bins)
+        axs[0, 1].hist(mean_wq_time_arr, density=False, bins=n_bins)
+        axs[1, 0].hist(mean_q_len_arr, density=False, bins=n_bins)
+        axs[1, 1].hist(num_c_arr, density=False, bins=n_bins)
+        axs[2, 0].hist(num_s_arr, density=False, bins=n_bins)
+        # axs[0, 0].title('Histogram of Sevice Time')
+        # axs[0, 0].ylabel('Probability')
+        # axs[0, 0].xlabel('Service time')
+        plt.show()
 
     else:
         raise NotImplementedError
