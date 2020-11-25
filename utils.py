@@ -40,7 +40,6 @@ def param_interpreter(params):
             params['MODE'] = 'deterministic'
         else:
             params['MODE'] = 'stochastic'
-            raise NotImplementedError
 
     return params
 
@@ -57,10 +56,18 @@ def t_arr_creator(params):
         a_mean = params['D_PARAMS']['A_MEAN']
         t_sim_in = params['SIM_CTRL']['T_SIM_IN']
         arr_list = np.arange(start=a_mean, stop=t_sim_in, step=a_mean)
-        t_arr = np.zeros(t_sim_in, dtype=np.uint32)
-        t_arr[arr_list] = 1
+    elif params['MODE'] == 'stochastic':
+        a_mean = params['D_PARAMS']['A_MEAN']
+        t_sim_in = params['SIM_CTRL']['T_SIM_IN']
+        arr_list = random_generator(('exponential', a_mean), sz=t_sim_in)
+        arr_list = np.cumsum(arr_list)
+        assert arr_list[-1] >= t_sim_in
+        arr_list = arr_list[arr_list < t_sim_in]
     else:
         raise NotImplementedError
+
+    t_arr = np.zeros(t_sim_in, dtype=np.uint32)
+    t_arr[arr_list] = 1
 
     return t_arr
 
@@ -77,9 +84,35 @@ def dist_interpreter(dist):
     if type(dist) == int:
         return dist
     elif type(dist) == tuple:
-        raise NotImplementedError
+        return random_generator(dist)[0]
     else:
         raise ValueError("Invalid distribution specified.")
+
+
+# ****************************************        Function Declaration        **************************************** #
+def random_generator(dist, sz=1):
+    """
+    This function is used to sample a value from a random distribution.
+
+    :param dist: A tuple specifying a random distribution.
+    :param sz: An integer specifying the number of values to generate
+    :return: A sample from the distribution.
+    :rtype: ndarray
+    """
+    dist_type = dist[0].lower()
+    dist_args = dist[1:]
+
+    if dist_type == 'uniform':
+        val = np.ceil(np.random.uniform(*dist_args, size=sz)).astype(np.int)
+    elif dist_type == 'triangular':
+        val = np.ceil(np.random.triangular(*dist_args, size=sz)).astype(np.int)
+    elif dist_type == 'exponential':
+        val = np.ceil(np.random.exponential(*dist_args, size=sz)).astype(np.int)
+    elif dist_type == 'normal':
+        val = np.ceil(np.random.normal(*dist_args, size=sz)).astype(np.int)
+    else:
+        raise NotImplementedError("Procedure to handle the given distribution is not implemented.")
+    return val
 
 
 # ****************************************        Function Declaration        **************************************** #
@@ -92,11 +125,25 @@ def time_estimator(dist):
     :rtype: int
     """
     if type(dist) == int:
-        return dist
+        val = dist
     elif type(dist) == tuple:
-        raise NotImplementedError
+        dist_type = dist[0].lower()
+        dist_args = dist[1:]
+        # 90th percentile / 0.9 quantile
+        if dist_type == 'uniform':
+            val = dist_args[0] + 0.9 * (dist_args[1] - dist_args[0])
+        elif dist_type == 'triangular':
+            val = dist_args[2] - np.sqrt((dist_args[2] - dist_args[0]) * (dist_args[2] - dist_args[1]) * 0.1)
+        elif dist_type == 'exponential':
+            val = -np.log(0.1) * dist_args[0]
+        elif dist_type == 'normal':
+            # TODO: Implement the Quantile function for Normal distribution
+            val = dist_args[1] + 1.282 * dist_args[1]
+        else:
+            raise NotImplementedError("Procedure to handle the given distribution is not implemented.")
     else:
         raise ValueError("Invalid distribution specified.")
+    return val
 
 
 """
