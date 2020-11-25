@@ -21,11 +21,20 @@ def text_output(params, mean_s_time_arr, mean_wq_time_arr, mean_q_len_arr, num_c
 
     elif params['MODE'] == 'stochastic':
         print("\nSimulation ran %d times for %d time steps." % (sim_ctrl['N'], sim_ctrl['T_SIM_IN']))
-        print("Mean service time for ships was: %2.2f minutes" % mean_s_time_arr.mean())
-        print("Mean queue wait time for ships was: %2.2f minutes" % mean_wq_time_arr.mean())
-        print("Mean queue length was: %2.2f ships" % mean_q_len_arr.mean())
-        print("Number of cargo containers transported to the city: %d containers." % num_c_arr.mean())
-        print("Number of ships serviced by the dock: %d ships." % num_s_arr.mean())
+        print("\nMean service time for ships was: %2.2f minutes" % mean_s_time_arr.mean())
+        print("Standard deviation of service time for ships was: %2.2f minutes" % mean_s_time_arr.std())
+
+        print("\nMean queue wait time for ships was: %2.2f minutes" % mean_wq_time_arr.mean())
+        print("Standard deviation of queue wait time for ships was: %2.2f minutes" % mean_wq_time_arr.std())
+
+        print("\nMean queue length was: %2.2f ships" % mean_q_len_arr.mean())
+        print("Standard deviation of queue length was: %2.2f ships" % mean_q_len_arr.std())
+
+        print("\nNumber of cargo containers transported to the city: %2.2f containers." % num_c_arr.mean())
+        print("Standard deviation of number of cargo containers transported: %2.2f containers" % num_c_arr.std())
+
+        print("\nNumber of ships serviced by the dock: %2.2f ships." % num_s_arr.mean())
+        print("Standard deviation of number of ships serviced by the dock: %2.2f ships" % num_s_arr.std())
 
     else:
         raise NotImplementedError
