@@ -41,11 +41,11 @@ def main(args):
     num_c_arr = np.zeros(num_exp)           # Number of cargo containers transported to city
     num_s_arr = np.zeros(num_exp)           # Number of ships processed
 
-    std_s_time_arr = np.zeros(num_exp)  # Mean service time
-    std_wq_time_arr = np.zeros(num_exp)  # Mean queue wait time
-    std_q_len_arr = np.zeros(num_exp)  # Mean queue length
-    std_c_arr = np.zeros(num_exp)  # Number of cargo containers transported to city
-    std_s_arr = np.zeros(num_exp)  # Number of ships processed
+    std_s_time_arr = np.zeros(num_exp)  # STD service time
+    std_wq_time_arr = np.zeros(num_exp)  # STD queue wait time
+    std_q_len_arr = np.zeros(num_exp)  # STD queue length
+    std_c_arr = np.zeros(num_exp)  # STD of cargo containers transported to city
+    std_s_arr = np.zeros(num_exp)  # STD of ships processed
 
     np.random.seed(args.seed)
 

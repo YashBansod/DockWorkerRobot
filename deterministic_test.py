@@ -68,7 +68,7 @@ def main(args):
         output_file[:, 3] = num_c_arr
         output_file[:, 4] = num_s_arr
         # noinspection PyTypeChecker
-        np.savetxt('det_test_%s.txt' % exp_id, output_file, fmt='%0.2f', delimiter=', ', header=header)
+        np.savetxt('deterministic_test_%s.csv' % exp_id, output_file, fmt='%0.2f', delimiter=', ', header=header)
 
 
 # ******************************************        Main Program End        ****************************************** #
