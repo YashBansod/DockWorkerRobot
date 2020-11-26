@@ -41,6 +41,12 @@ def main(args):
     num_c_arr = np.zeros(num_exp)           # Number of cargo containers transported to city
     num_s_arr = np.zeros(num_exp)           # Number of ships processed
 
+    std_s_time_arr = np.zeros(num_exp)  # Mean service time
+    std_wq_time_arr = np.zeros(num_exp)  # Mean queue wait time
+    std_q_len_arr = np.zeros(num_exp)  # Mean queue length
+    std_c_arr = np.zeros(num_exp)  # Number of cargo containers transported to city
+    std_s_arr = np.zeros(num_exp)  # Number of ships processed
+
     np.random.seed(args.seed)
 
     ind = 0
@@ -75,18 +81,29 @@ def main(args):
                     mean_q_len_arr[ind] = _mean_q_len_arr.mean()
                     num_c_arr[ind] = _num_c_arr.mean()
                     num_s_arr[ind] = _num_s_arr.mean()
+
+                    std_s_time_arr[ind] = _mean_s_time_arr.std()
+                    std_wq_time_arr[ind] = _mean_wq_time_arr.std()
+                    std_q_len_arr[ind] = _mean_q_len_arr.std()
+                    std_c_arr[ind] = _num_c_arr.std()
+                    std_s_arr[ind] = _num_s_arr.std()
                     ind += 1
 
     if args.write:
-        header = 'S_T, WQ_T, Q_L, C, S'
-        output_file = np.zeros((num_exp, 5))
+        header = 'S_T(u), S_T(s), WQ_T(u), WQ_T(s), Q_L(u), Q_L(s), C(u), C(s), S(u), S(s)'
+        output_file = np.zeros((num_exp, 10))
         output_file[:, 0] = mean_s_time_arr
-        output_file[:, 1] = mean_wq_time_arr
-        output_file[:, 2] = mean_q_len_arr
-        output_file[:, 3] = num_c_arr
-        output_file[:, 4] = num_s_arr
+        output_file[:, 1] = std_s_time_arr
+        output_file[:, 2] = mean_wq_time_arr
+        output_file[:, 3] = std_wq_time_arr
+        output_file[:, 4] = mean_q_len_arr
+        output_file[:, 5] = std_q_len_arr
+        output_file[:, 6] = num_c_arr
+        output_file[:, 7] = std_c_arr
+        output_file[:, 8] = num_s_arr
+        output_file[:, 9] = std_s_arr
         # noinspection PyTypeChecker
-        np.savetxt('stochastic_test_%s.txt' % exp_id, output_file, fmt='%0.2f', delimiter=', ', header=header)
+        np.savetxt('stochastic_test_%s.csv' % exp_id, output_file, fmt='%0.2f', delimiter=', ', header=header)
 
 
 # ******************************************        Main Program End        ****************************************** #
