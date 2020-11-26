@@ -28,10 +28,10 @@ det_params['TC'] = 8
 PARAM_DICT['S_PARAMS'] = dict()
 st_params = PARAM_DICT['S_PARAMS']
 # Cargo-containers on the ship
-st_params['K'] = ('triangular', 6, 9, 10)
+st_params['K'] = ('triangular', 4, 6, 7)
 # Minutes taken to transport cargo-containers from ship to pallet.
 st_params['CSP'] = ('triangular', 1, 3, 4)
 # Minutes taken to transport cargo-containers from pallet to transportation robot.
-st_params['CPT'] = ('triangular', 2, 4, 5)
+st_params['CPT'] = ('triangular', 0, 2, 3)
 # Minutes taken to transport cargo-containers from ship to transportation robot.
 st_params['CST'] = ('triangular', 3, 5, 6)
