@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Dock Worker Robot Simulation.
+Main Dock Worker Robot Simulation.
 """
 
 # ******************************************    Libraries to be imported    ****************************************** #
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     argparser.add_argument('--dir_path', default='./', type=str, help='Directory path of parameter file.')
     argparser.add_argument('-p', '--parameter', default='parameters.py', type=str, help='Name of the parameter file.')
     argparser.add_argument('-v', '--verbose', action='store_true', dest='debug', help='Print text results.')
-    argparser.add_argument('-w', '--write', action='store_true', dest='write', help='Write results as pickle file.')
+    # argparser.add_argument('-w', '--write', action='store_true', dest='write', help='Write results as pickle file.')
     argparser.add_argument('-s', '--seed', default=None, type=int, help='Set seed for repeating executions')
 
     sim_args = argparser.parse_args()
