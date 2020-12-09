@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Dock Worker Robot Simulation Deterministic Test Routine.
+Dock Worker Robot Simulation Stochastic Test Routine.
 """
 
 # ******************************************    Libraries to be imported    ****************************************** #
@@ -19,7 +19,7 @@ def main(args):
     """
     The main of the program.
     """
-    exp_id = 'exp_0'
+    exp_id = 'exp_2'
 
     param_path = join(args.dir_path, args.parameter)
     spec = importlib.util.spec_from_file_location("", param_path)
@@ -29,9 +29,9 @@ def main(args):
     st_params = param_dict['S_PARAMS']
 
     k_val_range = [('triangular', 4, 6, 7), ('triangular', 7, 9, 10), ('triangular', 10, 12, 13)]
-    csp_val_range = [('triangular', 1, 3, 4), ('triangular', 3, 5, 6)]
-    cpt_val_range = [('triangular', 0, 2, 3), ('triangular', 2, 4, 5)]
-    cst_val_range = [('triangular', 3, 5, 6), ('triangular', 7, 9, 10)]
+    csp_val_range = [('triangular', 1, 3, 4), ('triangular', 2, 4, 5), ('triangular', 3, 5, 6)]
+    cpt_val_range = [('triangular', 0, 2, 3), ('triangular', 1, 3, 4), ('triangular', 2, 4, 5)]
+    cst_val_range = [('triangular', 3, 5, 6), ('triangular', 5, 7, 8), ('triangular', 7, 9, 10)]
 
     num_exp = len(k_val_range) * len(csp_val_range) * len(cpt_val_range) * len(cst_val_range)
 
@@ -103,7 +103,8 @@ def main(args):
         output_file[:, 8] = num_s_arr
         output_file[:, 9] = std_s_arr
         # noinspection PyTypeChecker
-        np.savetxt('stochastic_test_%s.csv' % exp_id, output_file, fmt='%0.2f', delimiter=', ', header=header)
+        np.savetxt('./test_results/stochastic_test_%s.csv' % exp_id, output_file,
+                   fmt='%0.2f', delimiter=', ', header=header)
 
 
 # ******************************************        Main Program End        ****************************************** #
@@ -129,7 +130,7 @@ if __name__ == '__main__':
         print('\nProcess interrupted by user. Bye!')
 
 """
-Author(s): <First> <Last>
-Repository: https://github.com/
+Author(s): Yash Bansod, Shivam Mishra
+Repository: https://github.com/YashBansod
 Organization: University of Maryland at College Park
 """

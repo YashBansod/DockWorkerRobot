@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-File Description:
+File Description: File defining various classes used in the simulation.
 """
 
 # ******************************************    Libraries to be imported    ****************************************** #
@@ -318,8 +318,12 @@ class Brain(object):
 # ******************************************    Class Declaration End       ****************************************** #
 
 
+# ******************************************        Isolated Testing        ****************************************** #
+if __name__ == '__main__':
+    raise NotImplementedError('Isolated testing not implemented. Test it with the simulation function.')
+
 """
-Author(s): <First> <Last>
-Repository: https://github.com/
+Author(s): Yash Bansod, Shivam Mishra
+Repository: https://github.com/YashBansod
 Organization: University of Maryland at College Park
 """

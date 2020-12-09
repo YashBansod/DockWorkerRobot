@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """
-File Description:
+File Description: File defining the simulation function used for DWRS. This function is run N number of times in the
+    main_simulation.
 """
 
 # ******************************************    Libraries to be imported    ****************************************** #
@@ -101,7 +102,7 @@ if __name__ == '__main__':
         print('\nProcess interrupted by user. Bye!')
 
 """
-Author(s): <First> <Last>
-Repository: https://github.com/
+Author(s): Yash Bansod, Shivam Mishra
+Repository: https://github.com/YashBansod
 Organization: University of Maryland at College Park
 """

@@ -18,7 +18,7 @@ def main(args):
     """
     The main of the program.
     """
-    exp_id = 'exp_0'
+    exp_id = 'exp_1'
 
     param_path = join(args.dir_path, args.parameter)
     spec = importlib.util.spec_from_file_location("", param_path)
@@ -28,9 +28,9 @@ def main(args):
     st_params = param_dict['S_PARAMS']
 
     k_val_range = [6, 9, 12]
-    csp_val_range = [3, 5]
-    cpt_val_range = [2, 4]
-    cst_val_range = [5, 9]
+    csp_val_range = [3, 4, 5]
+    cpt_val_range = [2, 3, 4]
+    cst_val_range = [5, 7, 9]
 
     num_exp = len(k_val_range) * len(csp_val_range) * len(cpt_val_range) * len(cst_val_range)
 
@@ -68,15 +68,16 @@ def main(args):
         output_file[:, 3] = num_c_arr
         output_file[:, 4] = num_s_arr
         # noinspection PyTypeChecker
-        np.savetxt('deterministic_test_%s.csv' % exp_id, output_file, fmt='%0.2f', delimiter=', ', header=header)
+        np.savetxt('./test_results/deterministic_test_%s.csv' % exp_id, output_file,
+                   fmt='%0.2f', delimiter=', ', header=header)
 
 
 # ******************************************        Main Program End        ****************************************** #
 if __name__ == '__main__':
 
-    argparser = argparse.ArgumentParser(description='DWRS Simulator Main File.')
+    argparser = argparse.ArgumentParser(description='DWRS Simulator Deterministic Test File.')
 
-    argparser.add_argument('-d', '--display', action='store_true', dest='plot', help='Plot graphic results.')
+    # argparser.add_argument('-d', '--display', action='store_true', dest='plot', help='Plot graphic results.')
     argparser.add_argument('--dir_path', default='./', type=str, help='Directory path of parameter file.')
     argparser.add_argument('-p', '--parameter', default='parameters.py', type=str, help='Name of the parameter file.')
     argparser.add_argument('-v', '--verbose', action='store_true', dest='debug', help='Print text results.')
@@ -94,7 +95,7 @@ if __name__ == '__main__':
         print('\nProcess interrupted by user. Bye!')
 
 """
-Author(s): <First> <Last>
-Repository: https://github.com/
+Author(s): Yash Bansod, Shivam Mishra
+Repository: https://github.com/YashBansod
 Organization: University of Maryland at College Park
 """

@@ -74,7 +74,7 @@ if __name__ == '__main__':
         print('\nProcess interrupted by user. Bye!')
 
 """
-Author(s): <First> <Last>
-Repository: https://github.com/
+Author(s): Yash Bansod, Shivam Mishra
+Repository: https://github.com/YashBansod
 Organization: University of Maryland at College Park
 """

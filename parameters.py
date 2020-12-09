@@ -6,7 +6,7 @@ sim_ctrl = PARAM_DICT['SIM_CTRL']
 # Number of simulation time steps (in minutes)
 sim_ctrl['T_SIM_IN'] = 1440
 # Number of simulations to run
-sim_ctrl['N'] = 3000
+sim_ctrl['N'] = 30
 
 # Deterministic Parameters
 PARAM_DICT['D_PARAMS'] = dict()

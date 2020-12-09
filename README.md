@@ -3,3 +3,5 @@
 ### Sample DWRS Configuration:
 
 ![DWRS image](./images/DWRS.svg)
+
+### Run Instructions

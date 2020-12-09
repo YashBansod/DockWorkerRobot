@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-File Description:
+File Description: File defining the various outputs functions used by the simulator.
 """
 
 # ******************************************    Libraries to be imported    ****************************************** #
@@ -99,8 +99,12 @@ def graph_output(params, mean_s_time_arr, mean_wq_time_arr, mean_q_len_arr, num_
         raise NotImplementedError
 
 
+# ******************************************        Isolated Testing        ****************************************** #
+if __name__ == '__main__':
+    raise NotImplementedError('Isolated testing not implemented. Test it with the main simulation.')
+
 """
-Author(s): <First> <Last>
-Repository: https://github.com/
+Author(s): Yash Bansod, Shivam Mishra
+Repository: https://github.com/YashBansod
 Organization: University of Maryland at College Park
 """
